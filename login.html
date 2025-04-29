@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="home.css">
+    <title>Document</title>
+</head>
+<body>
+    <h2>Login</h2>
+    <div class="div2">
+        <form id="formdetails">
+            <label>Email :</label>
+            <input type="text" placeholder="enter email" required id="email" class="input5"/></br>
+            <label>Password :</label>
+            <input type="text" placeholder="enter password" required id="password" class="input6"/></br>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+    <p id="para2">login successfully</p>
+    <a href="password.html">change password</a>
+    </br>
+    <div class="back2">
+        <a href="Registartionpage.html" class="back1">Back</a>
+    </div>
+    <script>
+        let form=document.getElementById("formdetails")
+        const para=document.getElementById("para2")
+        const details={}
+        form.addEventListener("input",(event)=>{
+         const value=event.target.value;
+         const id=event.target.id;
+         details[id]=value;
+        })
+        form.addEventListener("submit",(event)=>{
+            event.preventDefault()
+            fetch("/logindetails",{
+                method:"POST",
+                headers:{"content-type":"apllication/json"},
+                body:JSON.stringify(details)
+            })
+            .then((res)=>res.json())
+            .then((data)=>{
+                if(data.message=="Enter valied details"){
+                    para.style.display="block";
+                    para.style.color="red"
+                    para.innerText=data.message;
+                }
+                else{
+                    para.style.display="block";
+                    para.style.color="green" 
+                    para.innerText=data.message;
+                }
+            })
+            .catch((error)=>{
+                console.log(error)
+            })
+        })
+    </script>
+</body>
+</html>

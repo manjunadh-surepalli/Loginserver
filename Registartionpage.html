@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="home.css">
+    <title>Document</title>
+</head>
+<body>
+  <h1>Registration Page</h1>
+ <div class="div1">
+    <form id="adddetails">
+        <label>Name :</label>
+        <input type="text" id="name" class="input1" placeholder="enter your name" required/></br>
+        <label>Mobile No :</label>
+        <input type="number" id="mobile" class="input2" placeholder="enter your mobile no" required/></br>
+        <label>Email :</label>
+        <input type="email" id="email" class="input3" placeholder="enter your email" required/></br>
+        <label>Password :</label>
+        <input type="text" id="password" class="input4" placeholder="enter your Password" required/></br>
+        <button type="submit">Register</button>
+      </form>
+ </div>
+  <p id="para1"></p>
+  <a href="login.html" id="login1">Login</a>
+  <script>
+    const form=document.getElementById("adddetails")
+    const para=document.getElementById("para1")
+    const login=document.getElementById("login1")
+    const details={}
+    form.addEventListener("input",(event)=>{
+       const value=event.target.value;
+       const id=event.target.id;
+       details[id]=value ;   
+    })
+    form.addEventListener("submit",(event)=>{
+        event.preventDefault()
+        fetch("/adddata",{
+          method:"POST",
+          headers:{"content-type":"application/json"},
+          body:JSON.stringify(details)
+        }).then(res=>res.json())
+        .then((data)=>{
+          para.innerText=data.message;
+          if(data.message=="Data alredy exists"){
+           para.style.color="red"
+          }
+          else{
+          para.style.color="green"
+          }
+        })
+        .catch((error)=>{
+          console.log(error)
+        }
+      )
+    })
+
+  </script>
+</body>
+</html>
